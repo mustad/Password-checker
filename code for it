@@ -1,0 +1,139 @@
+import re, string
+
+upper = ['Q','W','E','R','T','Y','U','I','O','P',
+         'A','S','D','F','G','H','J','K','L',
+         'Z','X','C','V','B','N','M', 'Null', 'null','nUll']
+
+lower = ['q','w','e','r','t','y','u','i','o','p',
+         'a','s','d','f','g','h','j','k','l',
+         'z','x','c','v','b','n','m', 'Null','null', 'nUll']
+
+password = input('enter ')
+
+length = len(password)
+
+a = 0
+b= 0
+
+amount = 0
+
+score = 0
+
+score = score + length
+
+print('score currently is at the beggining', score)
+
+######################################################
+
+
+def pswrd(): 
+
+    global score
+    
+    regex = re.compile(':!$%^&*()+-_=')
+
+    flag = False
+    
+    if re.search(r'[0-9]', password):
+        score = score + 5
+        print('digit search true')
+    if re.search(r'[a-z]', password):
+        score = score + 5
+        print('lower search true')
+    if re.search(r'[A-Z]', password):
+        score = score + 5
+        print('upper search true')
+
+    if (regex.search(password) != None):
+        score = score + 5
+        print('spec search is T')
+    else:
+        score = score + 0
+        print('spec search F')
+        flag = True
+
+    if re.search(r'[0-9]', password) and re.search(r'[a-z]', password) and re.search(r'[A-Z]', password) and flag == True :
+        score = score + 10
+        print('final 10 added on is true')
+ 
+    
+
+
+    
+pswrd()   
+
+print('score currently is for type checks', score)
+##############################################
+
+import re, string
+ 
+def clearup(s, chars):
+    return re.sub('[%s]' % chars, 'null', s).lower()
+ 
+
+newpas = (clearup(password, string.punctuation+string.digits))
+
+
+###############################################
+
+def letters(i,j):
+    global amount
+    global score
+    
+
+    
+    if newpas[i] == upper[j] or newpas[i] == lower[j] :
+        print('1')
+        
+  
+        if i == length - 1:
+            print('endedd')
+            
+        elif newpas[i+1] == upper[j+1] or newpas[i+1] == lower[j+1]:
+            print('2')
+
+            if i + 1 == length-1:
+                print('end for length')
+                
+
+            elif newpas[i+2] == upper[j+2] or newpas[i+2] == lower[j+2]:
+                print('3')
+                score = score - 5
+                print('score currently is at the 3 in a row', score)
+
+                amount = amount + 1
+
+                if i == length-1:
+                    print('end elif')
+
+                else:
+                  i = i + 1
+                  letters(i,j)
+            else:
+                i = i + 1
+                letters(i,j)
+        else:
+            i = i + 1
+            letters(i,0) 
+    else:
+        j=j+1
+        letters(i, j)
+    
+        
+    if j >= 28:
+        j = 0
+        i = i + 1
+        letters(i, j)
+        
+letters(a, b)
+
+#############################################################
+
+print ('you have --', amount, '-- 3 in a rows')
+
+if score > 20:
+    print('strong password with score', score)
+elif score >10:
+    print('sort of good password with score', score)
+else:
+    print ('very bad password with score', score)
